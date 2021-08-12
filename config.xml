@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration database="StackOverflow" schema="dbo" notes="" version="0.1"  server="DESKTOP-A7IIVA2" application_name="sp_Blitz_Excel" active_cell="A1">
+    <queries>
+        <global>
+            <column name="Priority" width="9" colorscale="gyr" />
+            <column name="URL" hide="yes" width="30" />
+            <column name="Finding" width="40" href_from="URL" />
+            <column name="FindingGroup" width="20" />
+            <column name="Query Type" hide="yes" width="30" />
+            <column name="Cached_Parameter_Info" hide="yes" />
+            <column name="DatabaseName" width="20"  />
+            <column name="Database" width="20"  />
+            <column name="Cost" width="20" format="#,##0.0000" databar="yes" bar_color="5920255" />
+            <column name="Query Text" width="20" />
+            <column name="# Executions" format="#,##0" force_to_number="yes" colorscale="ryg" />
+            <column name="Executions / Minute" format="#,##0" force_to_number="yes" />
+            <column name="Execution Weight" format="#,##0" force_to_number="yes" />
+            <column name="Total CPU (ms)" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255" />
+            <column name="Avg CPU (ms)" format="#,##0" force_to_number="yes" colorscale="ryg" />
+            <column name="CPU Weight" format="#,##0" force_to_number="yes" />
+            <column name="Total Duration (ms)" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255" />
+            <column name="Avg Duration (ms)" format="#,##0" force_to_number="yes" colorscale="ryg" />
+            <column name="Duration Weight" format="#,##0" force_to_number="yes" />
+            <column name="Total Reads" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255" />
+            <column name="Avg Reads" format="#,##0" force_to_number="yes" colorscale="ryg" />
+            <column name="Read Weight" format="#,##0" force_to_number="yes" />
+            <column name="Total Writes" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255" />
+            <column name="Avg Writes" format="#,##0" force_to_number="yes" colorscale="ryg" />
+            <column name="Write Weight" format="#,##0" force_to_number="yes" />
+            <column name="Average Rows" format="#,##0" force_to_number="yes" />
+            <column name="Minimum Memory Grant KB" format="#,##0" force_to_number="yes" />
+            <column name="Maximum Memory Grant KB" format="#,##0" force_to_number="yes" />
+            <column name="Minimum Used Grant KB" format="#,##0" force_to_number="yes" />
+            <column name="Maximum Used Grant KB" format="#,##0" force_to_number="yes" />
+            <column name="Average Max Memory Grant" format="#,##0" force_to_number="yes" />
+            <column name="Min Spills" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255"/>
+            <column name="Max Spills" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255"/>
+            <column name="Total Spills" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255"/>
+            <column name="Avg Spills" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255"/>
+            <column name="Created At" format="dd/mm/yyyy hh:mm:ss" width="20"/>
+            <column name="Last Completion" format="dd/mm/yyyy hh:mm:ss" width="20"/>
+        </global>
+        <query name="sp_Blitz" show_all_dataset="yes" show_everything="yes" columns_to_check="10">
+            <body>
+                <![CDATA[
+exec dbo.sp_Blitz @CheckServerInfo = 1, @CheckUserDatabaseObjects = 0
+                ]]>
+            </body>
+			<format name="sp_Blitz_1" extract_address="B2"  freeze="E3" worksheet_name="Blitz_Init" all_rows_height="15" all_columns_autofit="yes" hide_grid="yes" hide_heading="yes" order_by="Priority">
+				<column name="FindingsGroup" width="15" />
+				<column name="Details" width="80" />
+				<column name="QueryPlan" delete="yes" />
+				<column name="QueryPlanFiltered" delete="yes"  />
+				<column name="CheckID" width="10"  />
+            </format>
+        </query>
+		<query name="sp_BlitzFirst" show_all_dataset="no" show_everything="no">
+			<body>
+				<![CDATA[
+exec dbo.sp_BlitzFirst @ExpertMode = 1, @SinceStartup = 1
+                ]]>
+			</body>
+			<format name="sp_BlitzFirst_3" skip="yes">
+				<column name="run_date" hide="yes" />
+				<column name="elapsed_time" hide="yes" />
+				<column name="session_id" hide="yes" />
+				<column name="database_name" hide="yes" />
+				<column name="query_text" hide="yes" />
+				<column name="query_plan" hide="yes" />
+				<column name="live_query_plan" hide="yes" />
+				<column name="query_cost" hide="yes" />
+				<column name="status" hide="yes" />
+				<column name="wait_info" hide="yes" />
+				<column name="top_session_waits" hide="yes" />
+				<column name="blocking_session_id" hide="yes" />
+				<column name="open_transaction_count" hide="yes" />
+				<column name="is_implicit_transaction" hide="yes" />
+				<column name="nt_domain" hide="yes" />
+				<column name="host_name" hide="yes" />
+				<column name="login_name" hide="yes" />
+				<column name="nt_user_name" hide="yes" />
+				<column name="program_name" hide="yes" />
+			</format>
+
+            <format name="sp_BlitzFirst_11" worksheet_name="First_Waits" order_by="-Avg ms Per Wait" skip="no" extract_address="B2"  freeze="F3" hide_grid="yes" hide_heading="yes" >
+                <column name="Pattern" width="14" />
+                <column name="Sample Ended" width="17" />
+                <column name="wait_type" width="22.7" href_from="URL"/>
+                <column name="wait_category" width="16" />
+                <column name="Wait Time (Hours)" width="22.7" hide="yes" />
+                <column name="Signal Wait Time (Hours)" />
+                <column name="Number of Waits" width="18" format="#,##0" databar="yes" bar_color="5920255" />
+                <column name="Avg ms Per Wait" format="#,##0.00" databar="yes" bar_color="8700771" />
+            </format>
+
+            <format name="sp_BlitzFirst_12" worksheet_name="First_IO" skip="no" extract_address="B2"  freeze="F3" order_by="-MB Read/Written" hide_grid="yes" hide_heading="yes" >
+                <column name="Pattern" width="16" />
+                <column name="Sample Time" width="16.86" />
+                <column name="Sample (seconds)" width="18" format="#,##0" />
+                <column name="File Name" width="24" />
+                <column name="Drive" width="7" />
+                <column name="# Reads/Writes" width="17" format="#,##0" />
+                <column name="MB Read/Written" width="18" format="#,##0.0" />
+                <column name="Avg Stall (ms)" width="18" />
+                <column name="file physical name" width="20" />
+                <column name="StallRank" width="10"  />
+            </format>
+
+            <format name="sp_BlitzFirst_13" worksheet_name ="First_Init" skip="no" extract_address="B2"  freeze="E3" order_by="-ValueDelta" all_rows_height="15" hide_grid="yes" hide_heading="yes" >
+				<column name="Pattern" width="11" />
+				<column name="object_name" width="25" />
+				<column name="counter_name" width="25" />
+				<column name="instance_name" width="16" />
+				<column name="FirstSampleTime" width="18" />
+				<column name="FirstSampleValue" width="18" format="#,##0"/>
+				<column name="LastSampleTime" width="18" />
+				<column name="LastSampleValue" width="18" format="#,##0" />
+				<column name="ValueDelta" width="18" format="#,##0"/>
+				<column name="ValuePerSecond" width="18" format="#,##0.0"/>
+			</format>
+			<format name="sp_BlitzFirst_14" skip="no" worksheet_name ="First_Server_Info" extract_address="B2"  freeze="F3" hide_grid="yes" hide_heading="yes" all_rows_height="15">
+			</format>
+			<format name="sp_BlitzFirst_16" skip="yes">
+				<column name="Pattern" hide="yes" />
+				<column name="Sample Time" hide="yes" />
+				<column name="Sample (seconds)" hide="yes" />
+				<column name="File Name" hide="yes" />
+				<column name="Drive" hide="yes" />
+				<column name="# Reads/Writes" hide="yes" />
+				<column name="MB Read/Written" hide="yes" />
+				<column name="Avg Stall (ms)" hide="yes" />
+				<column name="file physical name" hide="yes" />
+				<column name="StallRank" hide="yes" />
+			</format>
+			<format name="sp_BlitzFirst_18" skip="yes">
+				<column name="Pattern" hide="yes" />
+				<column name="More Info" hide="yes" />
+				<column name="Details" hide="yes" />
+			</format>
+			<format name="sp_BlitzFirst_20" skip="yes">
+				<column name="run_date" hide="yes" />
+				<column name="elapsed_time" hide="yes" />
+				<column name="session_id" hide="yes" />
+				<column name="database_name" hide="yes" />
+				<column name="query_text" hide="yes" />
+				<column name="query_plan" hide="yes" />
+				<column name="live_query_plan" hide="yes" />
+				<column name="query_cost" hide="yes" />
+				<column name="status" hide="yes" />
+				<column name="wait_info" hide="yes" />
+				<column name="top_session_waits" hide="yes" />
+				<column name="blocking_session_id" hide="yes" />
+				<column name="open_transaction_count" hide="yes" />
+				<column name="is_implicit_transaction" hide="yes" />
+				<column name="nt_domain" hide="yes" />
+				<column name="host_name" hide="yes" />
+				<column name="login_name" hide="yes" />
+				<column name="nt_user_name" hide="yes" />
+				<column name="program_name" hide="yes" />
+			</format>
+			<format name="sp_BlitzFirst_15" skip="no" freeze="E3" worksheet_name="First_Waits"  hide_grid="yes" hide_heading="yes" extract_address="B2" >
+				<column name="Pattern" width="10" />
+				<column name="Sample Ended" width="17" />
+				<column name="Seconds Sample" width="9.33" />
+				<column name="wait_type" width="22.7" href_from="URL"/>
+				<column name="wait_category" width="13.8" />
+				<column name="Wait Time (Seconds)" width="22.7" hide="yes" />
+				<column name="Per Core Per Second" width="auto" />
+				<column name="Signal Wait Time (Seconds)" delete="yes" />
+				<column name="Number of Waits" width="13.8" format="#,##0" />
+				<column name="Percent Signal Waits" hide="yes" />
+			</format>
+			<format name="sp_BlitzFirst_17" extract_address="B2" worksheet_name ="First_Perfmon" all_columns_autofit="yes" hide_grid="yes" hide_heading="yes" order_by="-ValuePerSecond" all_rows_height="15">
+				<column name="object_name" width="25" />
+				<column name="Pattern" delete="yes" width="10" />
+				<column name="instance_name" delete="yes" />
+				<column name="LastSampleTime" delete="yes" />
+				<column name="LastSampleValue" delete="yes" />
+				<column name="FirstSampleTime" width="16.67" />
+				<column name="FirstSampleValue" format="#,##0" width="16.67" databar="yes" bar_color="2668287" />
+				<column name="ValueDelta" format="#,##0" width="16.67" databar="yes" bar_color="8700771" />
+				<column name="ValuePerSecond" format="#,##0.00" width="16.67" databar="yes" bar_color="5920255"  />
+			</format>
+		</query>
+		<query name="sp_BlitzIndex">
+			<body>
+				<![CDATA[
+exec dbo.sp_BlitzIndex @GetAllDatabases = 0
+                ]]>
+			</body>
+			<format name="sp_BlitzIndex_63" extract_address="A1" worksheet_name ="Index_Summary" all_columns_autofit="no" hide_grid="yes" hide_heading="yes" order_by="priority" all_rows_height="15" freeze="d2">
+				<column name="Database Name" width="auto" />
+				<column name="Details: schema.table.index(indexid)" width="30" />
+				<column name="Definition: [Property] ColumnName {datatype maxbytes}" width="31" />
+				<column name="Secret Columns" width="auto" />
+				<column name="Usage" width="auto" />
+				<column name="Size" width="auto" />
+				<column name="More Info" width="18" />
+				<column name="Create TSQL" width="60"  text_wrap="yes" halign="left"  valign="top" />
+			</format>
+            <format name="sp_BlitzIndex_173" skip="yes" extract_address="A1" worksheet_name ="Index_Summary" all_columns_autofit="no" hide_grid="yes" hide_heading="yes" order_by="priority" all_rows_height="15" freeze="d2">
+            </format>
+
+        </query>
+		<query name="Performance_Check">
+			<body>
+				<![CDATA[
+SELECT TOP(100000) *
+FROM Stackoverflow.dbo.users
+                ]]>
+			</body>
+			<format name="Performance_Check_1" all_rows_height="15" />
+			
+		</query>
+        <query name="sp_BlitzCache">
+            <body>
+                <![CDATA[
+exec dbo.sp_BlitzCache
+                ]]>
+            </body>
+            <format name="sp_BlitzCache_76" worksheet_name="Cache_Details" all_rows_height="15" all_columns_autofit="yes"  hide_grid="yes" hide_heading="yes">
+				<column name="Database" />
+				<column name="Query Text" width="20" />
+				<column name="Warnings" width="30" />
+				<column name="Query Plan" width="10" />
+				<column name="Missing Indexes" width="10" />
+				<column name="Implicit Conversion Info" width="10" />
+				<column name="Cached Execution Parameters" />
+				<column name="# Executions" format="#,##0" force_to_number="yes" colorscale="ryg" />
+				<column name="Executions / Minute" format="#,##0" force_to_number="yes" />
+				<column name="Execution Weight" format="#,##0" force_to_number="yes" />
+				<column name="Total CPU (ms)" format="#,##0" force_to_number="yes" databar="yes" bar_color="5920255" />
+				<column name="Avg CPU (ms)" format="#,##0" force_to_number="yes" colorscale="ryg" />
+				<column name="CPU Weight" format="#,##0" force_to_number="yes" />
+				<column name="Total Duration (ms)" format="#,##0" force_to_number="yes" />
+				<column name="Avg Duration (ms)" format="#,##0" force_to_number="yes" />
+				<column name="Duration Weight" format="#,##0" force_to_number="yes" />
+				<column name="Total Reads" format="#,##0" force_to_number="yes" />
+				<column name="Avg Reads" format="#,##0" force_to_number="yes" />
+				<column name="Read Weight" format="#,##0" force_to_number="yes" />
+				<column name="Total Writes" format="#,##0" force_to_number="yes" />
+				<column name="Avg Writes" format="#,##0" force_to_number="yes" />
+				<column name="Write Weight" format="#,##0" force_to_number="yes" />
+				<column name="Average Rows" format="#,##0" force_to_number="yes" />
+				<column name="Minimum Memory Grant KB" format="#,##0" force_to_number="yes" />
+				<column name="Maximum Memory Grant KB" format="#,##0" force_to_number="yes" />
+				<column name="Minimum Used Grant KB" format="#,##0" force_to_number="yes" />
+				<column name="Maximum Used Grant KB" format="#,##0" force_to_number="yes" />
+				<column name="Average Max Memory Grant" format="#,##0" force_to_number="yes" />
+				<column name="Min Spills" format="#,##0" force_to_number="yes" />
+				<column name="Max Spills" format="#,##0" force_to_number="yes" />
+				<column name="Total Spills" format="#,##0" force_to_number="yes" />
+				<column name="Avg Spills" format="#,##0" force_to_number="yes" />
+				<column name="Created At" />
+				<column name="Last Execution" />
+				<column name="Last Completion" />
+				<column name="Plan Handle" />
+				<column name="SQL Handle" />
+				<column name="SET Options" width="20" />
+				<column name="Query Hash" />
+				<column name="PlanGenerationNum" />
+				<column name="Remove Plan Handle From Cache" width="20" text_wrap="yes" halign="left"  valign="top" />
+			</format>
+			<format name="sp_BlitzCache_78" worksheet_name="Cache_Summary" all_rows_height="15" all_columns_autofit="yes"  hide_grid="yes" hide_heading="yes">
+				<column name="Details" width="50" />
+			</format>
+            <format name="sp_BlitzCache_85" worksheet_name="Cache_Details" all_rows_height="15" all_columns_autofit="yes"  hide_grid="yes" hide_heading="yes">
+                <column name="Database" />
+                <column name="Cost"  format="#,##0.0000" databar="yes" bar_color="5920255" />
+                <column name="Query Text" width="20" />
+                <column name="Warnings" width="30" />
+                <column name="Query Plan" width="10" />
+                <column name="Missing Indexes" width="10" />
+                <column name="Implicit Conversion Info" width="10" />
+                <column name="Cached Execution Parameters" />
+                <column name="Plan Handle" format="dd/mm/yyyy hh:mm:ss" />
+                <column name="SQL Handle" />
+                <column name="SET Options" width="20" />
+                <column name="Query Hash" />
+                <column name="PlanGenerationNum" />
+                <column name="Remove Plan Handle From Cache" width="20" text_wrap="yes" halign="left"  valign="top" />
+            </format>
+            <format name="sp_BlitzCache_87" worksheet_name="Cache_Info" all_rows_height="15" all_columns_autofit="yes"  hide_grid="yes" hide_heading="yes">
+            </format>
+            <format name="sp_BlitzCache_89" worksheet_name="Cache_Details" all_rows_height="15" hide_grid="yes" hide_heading="yes">
+                <column name="Warnings" width="30" />
+                <column name="Query Plan" width="14" />
+                <column name="Missing Indexes" width="20" />
+                <column name="Implicit Conversion Info" width="20" />
+                <column name="Cached Execution Parameters" width="30" />
+            </format>
+            <format name="sp_BlitzCache_91" worksheet_name="Cache_Summary" all_rows_height="15" hide_grid="yes" hide_heading="yes">
+                <column name="CheckID" width="16" />
+                <column name="Details" width="50" />
+            </format>
+        </query>
+        <query name="sp_BlitzWho">
+            <body>
+                <![CDATA[
+exec dbo.sp_BlitzWho
+                ]]>
+            </body>
+			<format name="sp_BlitzWho_2" worksheet_name="Who_Details" all_rows_height="15" all_columns_autofit="yes">
+				<column name="run_date" format="dd/mm/yyyy hh:mm:ss" />
+				<column name="elapsed_time" databar="yes" bar_color="5920255" />
+				<column name="session_id" />
+				<column name="database_name" />
+				<column name="query_text" width="20" />
+				<column name="query_plan" width="20" />
+				<column name="live_query_plan" width="20" />
+				<column name="query_cost" format="#,##0.0000" databar="yes" bar_color="5920255" />
+				<column name="status" />
+				<column name="wait_info" width="20" />
+				<column name="top_session_waits" width="20" />
+				<column name="blocking_session_id" />
+				<column name="open_transaction_count" />
+				<column name="is_implicit_transaction" />
+				<column name="nt_domain" />
+				<column name="host_name" />
+				<column name="login_name" />
+				<column name="nt_user_name" />
+				<column name="program_name" />
+			</format>
+        </query>
+        <query name="sp_BlitzQueryStore">
+            <body>
+                <![CDATA[
+exec dbo.sp_BlitzQueryStore
+                ]]>
+            </body>
+            <format name="sp_BlitzQueryStore_1" />
+        </query>
+        <query name="sp_BlitzLock">
+            <body>
+                <![CDATA[
+exec dbo.sp_BlitzLock
+                ]]>
+            </body>
+            <format name="sp_BlitzLock_1" />
+        </query>
+        <query name="sp_BlitzBackups">
+            <body>
+                <![CDATA[
+exec dbo.sp_BlitzBackup
+                ]]>
+            </body>
+            <format name="sp_BlitzBackups_1" />
+        </query>
+        <query name="">
+            <body>
+                <![CDATA[
+                ]]>
+            </body>
+            <format name="s_1" style="" font="" font_size="" total_sum="" total_avg="" order_by="" format_Post_Count="#,##0" format_Created="dd/mm/yyyy">
+                <location></location>
+            </format>
+        </query>
+    </queries>
+</configuration>
